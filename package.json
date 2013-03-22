@@ -1,0 +1,30 @@
+{
+  "name": "ugly-blanket-brunch",
+  "version": "1.5.1",
+  "description": "Brunch.io optimizer that creates separate .min.js (UglifyJS) and .cov.js (blanketjs) files.",
+  "main": "./lib/index",
+  "scripts": {
+    "prepublish": "coffee -o lib/ src/",
+    "test": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jerfowler/ugly-blanket-brunch.git"
+  },
+  "keywords": [
+    "UglifyJS",
+    "uglify",
+    "coverage",
+    "blanket",
+    "brunch"
+  ],
+  "author": "Jeremy Fowler",
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "dependencies": {
+    "blanket": "~1.0.8",
+    "coffee-script": "~1.6.2",
+    "uglify-js": "~2.2.5",
+    "async": "~0.2.6"
+  }
+}
