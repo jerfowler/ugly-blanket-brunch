@@ -8,13 +8,11 @@ module.exports = class Blanket
     type: 'javascript'
 
     constructor: (@config) ->
-        @blanket = pattern: /app\.js$/, options: {}
+        @blanket = pattern: /app\.js$/, options: {engineOnly: true}
         @uglify = pattern: /(vendor|app)\.js$/, fromString: yes
 
         if typeof @config?.plugins?.blanket == 'object'
             @blanket[key] = value for key, value of @config.plugins.blanket
-
-        blkt.options "data-cover-flags": @blanket.options
 
         if typeof @config?.plugins?.uglify == 'object'
             @uglify[key] = value for key, value of @config.plugins.uglify
@@ -22,15 +20,19 @@ module.exports = class Blanket
     optimize: (data, path, callback) =>
         async.parallel [
             (next) =>
-                return callback null, data unless @blanket.pattern.test path
-                blkt.instrument {inputFile: data, inputFileName: path}, (result) ->
-                    name = path.replace /\.js$/, '.cov.js'
-                    fs.writeFile name, result, next
-            (next) =>
-                return callback null, data unless @uglify.pattern.test path
+                return next null unless @blanket.pattern.test path
                 try
-                    result = uglify.minify data, @uglify
+                    name = path.replace /\.js$/, '.cov.js'
+                    blanket = blkt "data-cover-flags": @blanket.options
+                    blanket.instrument {inputFile: data, inputFileName: path}, (result) ->
+                        fs.writeFile name, result, next
+                catch err
+                    next err
+            (next) =>
+                return next null unless @uglify.pattern.test path
+                try
                     name = path.replace /\.js$/, '.min.js'
+                    result = uglify.minify data, @uglify
                     fs.writeFile name, result, next
                 catch err
                     next err
