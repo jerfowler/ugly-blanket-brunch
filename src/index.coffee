@@ -33,7 +33,7 @@ module.exports = class Blanket
                 try
                     name = path.replace /\.js$/, '.min.js'
                     result = uglify.minify data, @uglify
-                    fs.writeFile name, result, next
+                    fs.writeFile name, result.code, next
                 catch err
                     next err
         ], (err, res) ->

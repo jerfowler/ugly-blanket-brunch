@@ -1,6 +1,6 @@
 {
   "name": "ugly-blanket-brunch",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "description": "Brunch.io optimizer that creates separate .min.js (UglifyJS) and .cov.js (blanketjs) files.",
   "main": "./lib/index",
   "scripts": {
